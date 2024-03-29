@@ -9,9 +9,13 @@ class NewsRepository:
         self.news_file_path = "src/repository/json/news.json"
         self.comments_file_path = "src/repository/json/comments.json"
 
-    def get_all_news(self) -> dict:
+    def get_not_deleted_news(self) -> dict:
         with open(self.news_file_path, "r") as news_file:
-            return json.load(news_file)
+            news_data = json.load(news_file)
+        news_data["news"] = [
+            news for news in news_data["news"] if not news.get("deleted", False)
+        ]
+        return news_data
 
     def get_comments_for_news(self, news_id: int) -> List[dict]:
         with open(self.comments_file_path, "r") as comments_file:
@@ -23,7 +27,7 @@ class NewsRepository:
         ]
 
     def get_news_by_id(self, news_id: int) -> dict | None:
-        news_list = self.get_all_news()["news"]
+        news_list = self.get_not_deleted_news()["news"]
         for news_item in news_list:
             if news_item["id"] == news_id:
                 return news_item

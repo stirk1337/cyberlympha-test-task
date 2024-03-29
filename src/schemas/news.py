@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List
 
 
 class Comment(BaseModel):
@@ -16,7 +16,7 @@ class News(BaseModel):
     date: str
     body: str
     deleted: bool
-    comments_count: Optional[int] = 0
+    comments_count: int
 
 
 class NewsList(BaseModel):
